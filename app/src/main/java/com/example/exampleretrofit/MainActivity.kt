@@ -2,17 +2,26 @@ package com.example.exampleretrofit
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var rvListaRepos: RecyclerView
+    private lateinit var adapter: ListaReposAdapter
+
     private val service: GitHubService = RetrofitManager().services
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        rvListaRepos = findViewById(R.id.rvListaRepos)
+        rvListaRepos.layoutManager = LinearLayoutManager(this)
+
         getReposGithub()
     }
 
@@ -29,7 +38,12 @@ class MainActivity : AppCompatActivity() {
                             println(
                                 it.nameRepo.plus("\n")
                             )
+
+                            adapter = ListaReposAdapter(listRepos)
+                            rvListaRepos.adapter = adapter
                         }
+
+
                     }
                 }
 
